@@ -48,6 +48,7 @@ function handleNavigation(url, tabId) {
         console.log("Automação Shop App: Navegação em URL do ShopApp detectada:", url);
         // Não precisamos "ativar" explicitamente aqui, pois content.js sempre é injetado.
         // O content.js irá gerenciar suas funcionalidades internamente com base na URL e mensagens.
+        chrome.tabs.sendMessage(tabId, { action: "activateExtension" });
     } else {
         console.log("Automação Shop App: Navegação fora do ShopApp. Enviando mensagem para desativar funcionalidades.");
         // Envia mensagem para o content.js para desativar suas funcionalidades e remover o painel

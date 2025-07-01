@@ -91,13 +91,36 @@
   let cmsHelpertargetImages = null;
   let cmsHelperExpiredDivs = null;
   let expiredSpanTexts = null;
+  let cmsHelperAllDivs = null;
+  let allSpanTexts = null;
 
   function initializeCmsHelperElements() {
     cmsHelpertargetImages = document.querySelectorAll('div.widgets-preview-h-full-horizontal img[title]');
     cmsHelperExpiredDivs = document.querySelectorAll('div.widget-card-expired');
+    cmsHelperAllDivs = document.querySelectorAll('div.widget-categories-list');
     expiredSpanTexts = Array.from(cmsHelperExpiredDivs)
       .flatMap(div => Array.from(div.querySelectorAll('span')).map(span => span.innerText.trim()));
+    allSpanTexts = Array.from(cmsHelperAllDivs)
+      .flatMap(div => Array.from(div.querySelectorAll('.overall-container')).map(divObj => {
+        return {
+          title: divObj.querySelector('span.widget-title').innerText,
+          src: divObj.querySelector('.hover-rect img')?.src
+        }
+      }));
     // console.log('CMS Helper: Elementos inicializados/atualizados.');
+  }
+  
+
+  function addYellowBorders() {
+    initializeCmsHelperElements();
+    
+    cmsHelpertargetImages.forEach(img => {
+      const titleText = img.getAttribute('title').trim();
+      if (allSpanTexts.some(obj => obj.title.trim() === titleText && obj.src.endsWith("394453f37b3a0990c8de.svg"))) {
+        img.parentNode.style.border = '4px solid yellow';
+        img.parentNode.style.borderRadius = '5px';
+      }
+    });
   }
 
   function addRedBorders() {
@@ -403,7 +426,13 @@ function atualizarDataNoTitulo() {
       case 'hideExpired':
         hideExpired();
         break;
+      case 'activateExtension':
+        addRedBorders();
+        addTitles();
+        addYellowBorders();
+        break;
       case 'deactivateExtension':
+
         // Remove elementos da extensão e limpa listeners ao sair de uma URL do ShopApp
         console.log("Automação Shop App: Comando deactivateExtension recebido. Limpando elementos e listeners.");
         if (iframe && iframe.parentNode) {
@@ -460,3 +489,4 @@ function atualizarDataNoTitulo() {
   }
 
 })();
+
