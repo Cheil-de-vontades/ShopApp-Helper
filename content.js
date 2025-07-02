@@ -166,6 +166,8 @@
       titleSpan.style.marginTop = '4px';
       titleSpan.style.border = '1px solid #ccc';
       titleSpan.style.borderRadius = '3px';
+
+      copyButton(titleSpan, img.getAttribute('title').trim());
     });
     console.log('CMS Helper: Títulos adicionados.');
   }
@@ -273,7 +275,7 @@ function atualizarDataNoTitulo() {
         // Evita duplicar listeners
         if (carousel.dataset.listenerAttached === 'true') return;
 
-        carousel.addEventListener('click', () => {
+        carousel.querySelector('img').addEventListener('click', () => {
           const img = carousel.querySelector('img[title]');
           if (!img) return;
 
@@ -427,9 +429,9 @@ function atualizarDataNoTitulo() {
         hideExpired();
         break;
       case 'activateExtension':
+        addYellowBorders();
         addRedBorders();
         addTitles();
-        addYellowBorders();
         break;
       case 'deactivateExtension':
 

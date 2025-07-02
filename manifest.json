@@ -20,7 +20,7 @@
   "content_scripts": [
     {
       "matches": ["https://*/*"],
-      "js": ["content.js"],
+      "js": ["content.js", "utils/copyButton.js"],
       "run_at": "document_idle"
     }
   ],
