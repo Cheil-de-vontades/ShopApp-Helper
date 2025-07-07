@@ -10,7 +10,7 @@ chrome.action.onClicked.addListener((tab) => {
         console.warn("Automação Shop App: Não foi possível enviar a mensagem 'show_panel'. O script de conteúdo pode não estar pronto ou a URL mudou.", error);
       });
   } else {
-    console.log("Automação Shop App: A extensão só funciona em domínios ShopApp (opstools-p1).");
+    // console.log("Automação Shop App: A extensão só funciona em domínios ShopApp (opstools-p1).");
     // Opcional: Você pode adicionar uma notificação visual aqui para o usuário.
   }
 });
@@ -45,12 +45,12 @@ chrome.webNavigation.onHistoryStateUpdated.addListener(function(details) {
  */
 function handleNavigation(url, tabId) {
     if (isShopAppUrl(url)) {
-        console.log("Automação Shop App: Navegação em URL do ShopApp detectada:", url);
+        // console.log("Automação Shop App: Navegação em URL do ShopApp detectada:", url);
         // Não precisamos "ativar" explicitamente aqui, pois content.js sempre é injetado.
         // O content.js irá gerenciar suas funcionalidades internamente com base na URL e mensagens.
         chrome.tabs.sendMessage(tabId, { action: "activateExtension" });
     } else {
-        console.log("Automação Shop App: Navegação fora do ShopApp. Enviando mensagem para desativar funcionalidades.");
+        // console.log("Automação Shop App: Navegação fora do ShopApp. Enviando mensagem para desativar funcionalidades.");
         // Envia mensagem para o content.js para desativar suas funcionalidades e remover o painel
         chrome.tabs.sendMessage(tabId, { action: "deactivateExtension" })
             .catch(error => {

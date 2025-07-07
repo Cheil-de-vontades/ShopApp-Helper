@@ -2,11 +2,11 @@
   // A extensão só deve proceder se a URL atual for um domínio do ShopApp
   const isShopAppToolDomain = location.href.startsWith("https://opstools-p1");
   if (!isShopAppToolDomain) {
-    console.log("Automação Shop App: Não é uma URL do ShopApp. Script de conteúdo não ativo para features.");
+    // console.log("Automação Shop App: Não é uma URL do ShopApp. Script de conteúdo não ativo para features.");
     return; // Sai do script se não for uma URL alvo
   }
 
-  console.log('Automação Shop App: Script de conteúdo iniciado para o domínio ShopApp.');
+  // console.log('Automação Shop App: Script de conteúdo iniciado para o domínio ShopApp.');
 
   // --- Criação e Gerenciamento do Iframe do Painel Flutuante ---
   const IFRAME_ID = 'automa-shop-app-iframe';
@@ -35,7 +35,7 @@
       display: 'block' // Garante que seja visível por padrão
     });
     document.body.appendChild(iframe);
-    console.log('Automação Shop App: Iframe criado e adicionado ao DOM.');
+    // console.log('Automação Shop App: Iframe criado e adicionado ao DOM.');
   }
 
   if (!btnRestore) {
@@ -62,7 +62,7 @@
       display: 'none', // Inicialmente oculto
     });
     document.body.appendChild(btnRestore);
-    console.log('Automação Shop App: Botão de restaurar criado.');
+    // console.log('Automação Shop App: Botão de restaurar criado.');
   }
 
   // Listener para o botão de restaurar
@@ -70,7 +70,7 @@
     iframe.style.display = 'block';
     btnRestore.style.display = 'none';
     chrome.storage.local.set({ isPanelMinimized: false });
-    console.log('Automação Shop App: Painel restaurado.');
+    // console.log('Automação Shop App: Painel restaurado.');
   });
 
   // Carrega o estado e a posição do painel do storage
@@ -78,150 +78,36 @@
     if (result.isPanelMinimized) {
       iframe.style.display = 'none';
       btnRestore.style.display = 'block';
-      console.log('Automação Shop App: Painel carregado como minimizado.');
+      // console.log('Automação Shop App: Painel carregado como minimizado.');
     }
     if (result.extBoxPosition) {
       Object.assign(iframe.style, result.extBoxPosition);
-      console.log('Automação Shop App: Posição do painel carregada.');
+      // console.log('Automação Shop App: Posição do painel carregada.');
     }
   });
 
-  // --- Funções das Novas Funcionalidades (ShopApp Helper) ---
-
-  let cmsHelpertargetImages = null;
-  let cmsHelperExpiredDivs = null;
-  let expiredSpanTexts = null;
-  let cmsHelperAllDivs = null;
-  let allSpanTexts = null;
-
-  function initializeCmsHelperElements() {
-    cmsHelpertargetImages = document.querySelectorAll('div.widgets-preview-h-full-horizontal img[title]');
-    cmsHelperExpiredDivs = document.querySelectorAll('div.widget-card-expired');
-    cmsHelperAllDivs = document.querySelectorAll('div.widget-categories-list');
-    expiredSpanTexts = Array.from(cmsHelperExpiredDivs)
-      .flatMap(div => Array.from(div.querySelectorAll('span')).map(span => span.innerText.trim()));
-    allSpanTexts = Array.from(cmsHelperAllDivs)
-      .flatMap(div => Array.from(div.querySelectorAll('.overall-container')).map(divObj => {
-        return {
-          title: divObj.querySelector('span.widget-title').innerText,
-          src: divObj.querySelector('.hover-rect img')?.src
-        }
-      }));
-    // console.log('CMS Helper: Elementos inicializados/atualizados.');
-  }
-  
-
-  function addYellowBorders() {
-    initializeCmsHelperElements();
-    
-    cmsHelpertargetImages.forEach(img => {
-      const titleText = img.getAttribute('title').trim();
-      if (allSpanTexts.some(obj => obj.title.trim() === titleText && obj.src.endsWith("394453f37b3a0990c8de.svg"))) {
-        img.parentNode.style.border = '4px solid yellow';
-        img.parentNode.style.borderRadius = '5px';
-      }
-    });
-  }
-
-  function addRedBorders() {
-    initializeCmsHelperElements();
-    cmsHelpertargetImages.forEach((img) => {
-      const titleText = img.getAttribute('title').trim();
-      if (expiredSpanTexts.includes(titleText)) {
-        img.parentNode.style.border = '4px solid red';
-        img.parentNode.style.borderRadius = '5px';
-      }
-    });
-    console.log('CMS Helper: Bordas vermelhas adicionadas.');
-  }
-
-  function removeRedBorders() {
-    initializeCmsHelperElements();
-    cmsHelpertargetImages.forEach((img) => {
-      const titleText = img.getAttribute('title').trim();
-      if (expiredSpanTexts.includes(titleText)) {
-        img.parentNode.style.border = 'none';
-        img.parentNode.style.borderRadius = ''; // Remove border-radius também
-      }
-    });
-    console.log('CMS Helper: Bordas vermelhas removidas.');
-  }
-
-  function addTitles() {
-    initializeCmsHelperElements();
-    cmsHelpertargetImages.forEach((img) => {
-      let titleSpan = img.parentNode.querySelector('.cms-helper-title');
-      if (!titleSpan) {
-        titleSpan = document.createElement('span');
-        titleSpan.className = 'cms-helper-title';
-        img.parentNode.insertBefore(titleSpan, img.nextSibling);
-      }
-      titleSpan.textContent = img.getAttribute('title').trim();
-      titleSpan.style.display = 'block'; // Garante que o título esteja visível
-      // Estilização básica para o span do título
-      titleSpan.style.backgroundColor = '#ffeb3b';
-      titleSpan.style.color = '#000';
-      titleSpan.style.fontSize = '12px';
-      titleSpan.style.padding = '2px 4px';
-      titleSpan.style.marginTop = '4px';
-      titleSpan.style.border = '1px solid #ccc';
-      titleSpan.style.borderRadius = '3px';
-
-      copyButton(titleSpan, img.getAttribute('title').trim());
-    });
-    console.log('CMS Helper: Títulos adicionados.');
-  }
-
-  function removeTitles() {
-    document.querySelectorAll('.cms-helper-title').forEach(span => {
-      span.style.display = 'none'; // Oculta em vez de remover para permitir fácil alternância
-    });
-    console.log('CMS Helper: Títulos removidos.');
-  }
-
-  function showExpired() {
-    initializeCmsHelperElements();
-    cmsHelpertargetImages.forEach((img) => {
-      const titleText = img.getAttribute('title').trim();
-      if (expiredSpanTexts.includes(titleText)) {
-        img.parentNode.style.display = 'block'; // Garante que o widget em si esteja visível
-      }
-    });
-    cmsHelperExpiredDivs.forEach(div => {
-      div.style.display = 'block'; // Garante que a overlay "Expirado" esteja visível
-    });
-    console.log('CMS Helper: Expirados mostrados.');
-  }
-
-  function hideExpired() {
-    initializeCmsHelperElements();
-    cmsHelpertargetImages.forEach((img) => {
-      const titleText = img.getAttribute('title').trim();
-      if (expiredSpanTexts.includes(titleText)) {
-        img.parentNode.style.display = 'none'; // Oculta o widget
-      }
-    });
-    cmsHelperExpiredDivs.forEach(div => {
-      div.style.display = 'none'; // Oculta a overlay "Expirado"
-    });
-    console.log('CMS Helper: Expirados ocultados.');
-  }
-
   function limparEspacosInput() {
-  const inp = document.getElementById("_marketingData[0].deeplinkQuery");
-  if (inp && inp.value.trim() !== "") {
-    // 1. Remove todos os espaços (início, meio e fim)
-    inp.value = inp.value.replace(/\s/g, "");
+    const inp = document.getElementById("_marketingData[0].deeplinkQuery");
+    const errorMessageEl = document.createElement('span');
+    errorMessageEl.setAttribute('id', 'exErrorMessageDeepLink');
+    errorMessageEl.style.color = "red";
+    errorMessageEl.style.margin = "0px";
 
-    // 2. Substitui 'http://' por 'https://'
-    inp.value = inp.value.replace(/^http:\/\//, "https://");
-
-    // 3. Se não começar com 'https://', adiciona 'https://'
-    if (!inp.value.startsWith("https://")) {
-      inp.value = "https://" + inp.value;
+    if (inp && inp.value.trim() !== "") {
+      if (inp.value.match(/\s/g) || inp.value.match(/^http:\/\//) || !inp.value.startsWith("https://")) {
+        inp.style.border = "solid red 1px";
+        if (!inp.parentNode.querySelector('#exErrorMessageDeepLink')) {
+          errorMessageEl.innerText = "A URL não deve ter espaços e deve iniciar com https://"
+          inp.parentNode.appendChild(errorMessageEl);
+        }
+      } else {
+        inp.style.border = "none";
+        inp.parentNode.querySelector('#exErrorMessageDeepLink').remove();
+      } 
     }
-  }
 }
+
+
 function atualizarDataNoTitulo() {
   const analyticsTitleInput = document.getElementById('_marketingData[0].analyticsTitle');
   if (!analyticsTitleInput || !analyticsTitleInput.value) return;
@@ -237,7 +123,7 @@ function atualizarDataNoTitulo() {
   // 1. **VERIFICAÇÃO CHAVE**: Se o valor atual já termina com a data correta do dia,
   // não precisamos fazer nada. Isso impede a duplicação em execuções subsequentes.
   if (currentValue.endsWith(novaData)) {
-    console.log('Input Analytics Title: Data já está atualizada e correta. Nenhuma alteração necessária.');
+    // console.log('Input Analytics Title: Data já está atualizada e correta. Nenhuma alteração necessária.');
     return; // Sai da função imediatamente
   }
 
@@ -248,7 +134,7 @@ function atualizarDataNoTitulo() {
   // 3. Anexa a nova data, garantindo que ela seja a única data no final.
   analyticsTitleInput.value = tituloSemDatas + novaData;
 
-  console.log('Input Analytics Title: Data atualizada para', novaData);
+  // console.log('Input Analytics Title: Data atualizada para', novaData);
 }
 
 
@@ -261,51 +147,51 @@ function atualizarDataNoTitulo() {
   }
 
   function runCarouselScript() {
-  let attempts = 0;
-  const maxAttempts = 10;
+    let attempts = 0;
+    const maxAttempts = 10;
 
-  const intervalId = setInterval(() => {
-    attempts++;
+    const intervalId = setInterval(() => {
+      attempts++;
 
-    const carousels = document.querySelectorAll('.carousel.full-image-carousel');
-    const widgetItems = Array.from(document.querySelectorAll('.widget-categories-list .overall-container'));
+      const carousels = document.querySelectorAll('.carousel.full-image-carousel');
+      const widgetItems = Array.from(document.querySelectorAll('.widget-categories-list .overall-container'));
 
-    if (carousels.length > 0 && widgetItems.length > 0) {
-      carousels.forEach(carousel => {
-        // Evita duplicar listeners
-        if (carousel.dataset.listenerAttached === 'true') return;
+      if (carousels.length > 0 && widgetItems.length > 0) {
+        carousels.forEach(carousel => {
+          // Evita duplicar listeners
+          if (carousel.dataset.listenerAttached === 'true') return;
 
-        carousel.querySelector('img').addEventListener('click', () => {
-          const img = carousel.querySelector('img[title]');
-          if (!img) return;
+          carousel.querySelector('img')?.addEventListener('click', () => {
+            const img = carousel.querySelector('img[title]');
+            if (!img) return;
 
-          const title = img.title.trim();
+            const title = img.title.trim();
 
-          const widgetItem = widgetItems.find(item => {
-            const spanTitle = item.querySelector('span.widget-title');
-            return spanTitle && spanTitle.textContent.trim() === title;
+            const widgetItem = widgetItems.find(item => {
+              const spanTitle = item.querySelector('span.widget-title');
+              return spanTitle && spanTitle.textContent?.trim() === title;
+            });
+
+            if (!widgetItem) {
+              // // console.log('Título não encontrado na lista de widgets:', title);
+              return;
+            }
+
+            // // console.log('Clicando no overall-container com título:', title);
+            widgetItem.click();
           });
 
-          if (!widgetItem) {
-            // console.log('Título não encontrado na lista de widgets:', title);
-            return;
-          }
-
-          // console.log('Clicando no overall-container com título:', title);
-          widgetItem.click();
+          carousel.dataset.listenerAttached = 'true';
         });
 
-        carousel.dataset.listenerAttached = 'true';
-      });
+        // // console.log('Auto click: listeners adicionados com sucesso.');
+      }
 
-      // console.log('Auto click: listeners adicionados com sucesso.');
-    }
-
-    if (attempts >= maxAttempts) {
-      clearInterval(intervalId);
-      // console.log('Auto click: fim das tentativas.');
-    }
-  }, 1000);
+      if (attempts >= maxAttempts) {
+        clearInterval(intervalId);
+        // // console.log('Auto click: fim das tentativas.');
+      }
+    }, 1000);
 }
 
 
@@ -327,7 +213,7 @@ function atualizarDataNoTitulo() {
                               const fn = id.includes('deeplink') ? limparEspacosInput : atualizarDataNoTitulo;
                               el.addEventListener('blur', fn);
                               el.dataset.listenerAttached = 'true'; // Marca como anexado
-                              console.log(`Input Listener: Anexado para ${id}`);
+                              // console.log(`Input Listener: Anexado para ${id}`);
                           }
                       });
                   }
@@ -335,7 +221,7 @@ function atualizarDataNoTitulo() {
           });
           // Começa a observar o corpo do documento para mudanças na DOM
           window._inputObserver.observe(document.body, { childList: true, subtree: true });
-          console.log('Input Listener: MutationObserver para inputs iniciado.');
+          // console.log('Input Listener: MutationObserver para inputs iniciado.');
       }
 
       // Anexa os listeners também para elementos já presentes no carregamento inicial
@@ -345,7 +231,7 @@ function atualizarDataNoTitulo() {
             const fn = id.includes('deeplink') ? limparEspacosInput : atualizarDataNoTitulo;
             el.addEventListener('blur', fn);
             el.dataset.listenerAttached = 'true';
-            console.log(`Input Listener: Anexado para ${id} (no carregamento inicial).`);
+            // console.log(`Input Listener: Anexado para ${id} (no carregamento inicial).`);
         }
       });
   }
@@ -355,7 +241,7 @@ function atualizarDataNoTitulo() {
   const observerUrl = new MutationObserver(() => {
     if (location.href !== lastUrl) {
       lastUrl = location.href;
-      console.log('URL Changed (SPA):', lastUrl);
+      // console.log('URL Changed (SPA):', lastUrl);
       // Re-executa o script do carrossel e re-anexa os listeners de input em navegação SPA
       runCarouselScript();
       attachInputListeners();
@@ -367,11 +253,11 @@ function atualizarDataNoTitulo() {
     }
   });
   observerUrl.observe(document.body, { childList: true, subtree: true });
-  console.log('URL Observer: Iniciado para detectar mudanças SPA.');
+  // console.log('URL Observer: Iniciado para detectar mudanças SPA.');
 
   // --- Listener Unificado de Mensagens (do background.js e floating.js) ---
   chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-    // console.log('Automação Shop App: Mensagem recebida:', message.action);
+    // // console.log('Automação Shop App: Mensagem recebida:', message.action);
 
     switch (message.action) {
       case 'show_panel':
@@ -379,11 +265,11 @@ function atualizarDataNoTitulo() {
           iframe.style.display = 'block';
           btnRestore.style.display = 'none';
           chrome.storage.local.set({ isPanelMinimized: false });
-          console.log('Automação Shop App: Comando show_panel recebido.');
+          // console.log('Automação Shop App: Comando show_panel recebido.');
         }
         break;
       case 'executeAutomation':
-        console.log('Automação Shop App: Comando executeAutomation recebido.', message.data);
+        // console.log('Automação Shop App: Comando executeAutomation recebido.', message.data);
         // Implemente a lógica de automação aqui usando message.data.campo1 e message.data.campo2
         // Exemplo: document.getElementById('someField').value = message.data.campo1;
         break;
@@ -394,12 +280,12 @@ function atualizarDataNoTitulo() {
             iframe.style.display = 'block';
             btnRestore.style.display = 'none';
             chrome.storage.local.set({ isPanelMinimized: false });
-            console.log('Automação Shop App: Iframe maximizado por toggle.');
+            // console.log('Automação Shop App: Iframe maximizado por toggle.');
           } else {
             iframe.style.display = 'none';
             btnRestore.style.display = 'block';
             chrome.storage.local.set({ isPanelMinimized: true });
-            console.log('Automação Shop App: Iframe minimizado por toggle.');
+            // console.log('Automação Shop App: Iframe minimizado por toggle.');
           }
         }
         break;
@@ -407,7 +293,7 @@ function atualizarDataNoTitulo() {
         if (iframe) {
           Object.assign(iframe.style, message.value);
           chrome.storage.local.set({ extBoxPosition: message.value });
-          console.log('Automação Shop App: Posição do iframe atualizada para:', message.value);
+          // console.log('Automação Shop App: Posição do iframe atualizada para:', message.value);
         }
         break;
       case 'addRedBorders':
@@ -436,7 +322,7 @@ function atualizarDataNoTitulo() {
       case 'deactivateExtension':
 
         // Remove elementos da extensão e limpa listeners ao sair de uma URL do ShopApp
-        console.log("Automação Shop App: Comando deactivateExtension recebido. Limpando elementos e listeners.");
+        // console.log("Automação Shop App: Comando deactivateExtension recebido. Limpando elementos e listeners.");
         if (iframe && iframe.parentNode) {
             iframe.remove();
         }
@@ -467,7 +353,7 @@ function atualizarDataNoTitulo() {
                 }
             });
         }
-        console.log("Automação Shop App: Extensão desativada e elementos limpos.");
+        // console.log("Automação Shop App: Extensão desativada e elementos limpos.");
         break;
     }
     sendResponse({ status: 'ok' }); // Confirma o recebimento da mensagem
@@ -476,7 +362,7 @@ function atualizarDataNoTitulo() {
   // --- Execução Inicial do Script ao Carregar a Página ---
   // Garante que o DOM esteja totalmente carregado antes de interagir com ele.
   window.addEventListener('load', () => {
-    console.log('Automação Shop App: window.load event disparado. Executando scripts iniciais.');
+    // console.log('Automação Shop App: window.load event disparado. Executando scripts iniciais.');
     runCarouselScript();
     attachInputListeners(); // Anexa listeners de input no carregamento inicial
     initializeCmsHelperElements(); // Varredura inicial de elementos para funcionalidades helper
@@ -484,11 +370,10 @@ function atualizarDataNoTitulo() {
 
   // Verifica se o documento já está pronto (útil para desenvolvimento ou recargas rápidas)
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    // console.log('Automação Shop App: document.readyState é completo/interativo, executando scripts iniciais.');
+    // // console.log('Automação Shop App: document.readyState é completo/interativo, executando scripts iniciais.');
     runCarouselScript();
     attachInputListeners();
     initializeCmsHelperElements();
   }
 
 })();
-
