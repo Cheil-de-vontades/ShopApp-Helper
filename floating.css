@@ -31,7 +31,6 @@ html, body {
 #ext-box {
   display: flex;
   flex-direction: column;
-  gap: 16px; /* Espaço entre as seções */
   padding: 20px;
   box-sizing: border-box;
   height: auto; /* Permite que o conteúdo dite a altura */
@@ -55,7 +54,7 @@ h1 {
 }
 
 #pos-btns button {
-  padding: 10px 15px;
+  padding: 4px 8px;
   font-size: 16px;
   cursor: pointer;
   border: 3px solid #6a0dad; /* Borda roxa */
@@ -132,6 +131,7 @@ h1 {
   border-style: solid;
   /* Garante que os botões dentro de grupos flex se comportem bem */
   box-sizing: border-box;
+  margin-bottom: 8px;
 }
 
 /* Estilos específicos para botões existentes */
@@ -175,12 +175,12 @@ h1 {
 }
 
 /* Estilos específicos para os novos botões de funcionalidade, reutilizando temas existentes */
-#addRedBorders, #removeRedBorders {
+#addRedBorders, #removeRedBorders, #injectHideDisplayNo, #injectShowDisplayNo {
   border-color: #ff3c00; /* Vermelho para bordas */
   background: linear-gradient(145deg, #ff3c00, #a50000);
   box-shadow: inset 0 0 8px #ff6f4d, 0 4px 0 #8c0000;
 }
-#addRedBorders:hover, #removeRedBorders:hover {
+#addRedBorders:hover, #removeRedBorders:hover, #injectHideDisplayNo:hover, #injectShowDisplayNo:hover {
   border-color: #fff;
   background: linear-gradient(145deg, #ff6f4d, #c33a00);
   box-shadow: inset 0 0 12px #fff, 0 6px 0 #8c0000;

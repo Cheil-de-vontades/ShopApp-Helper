@@ -26,6 +26,7 @@
         "functions/toggleTitles.js",
         "functions/toggleBorders.js",
         "functions/toggleExpireds.js",
+        "functions/toggleShowOnScreen.js",
         "content.js"
       ],
       "run_at": "document_idle"

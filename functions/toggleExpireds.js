@@ -6,10 +6,6 @@ function showExpired() {
       img.parentNode.style.display = 'block'; // Garante que o widget em si esteja visível
     }
   });
-  cmsHelperExpiredDivs.forEach(div => {
-    div.style.display = 'block'; // Garante que a overlay "Expirado" esteja visível
-  });
-  // console.log('CMS Helper: Expirados mostrados.');
 }
 
 function hideExpired() {
@@ -20,8 +16,4 @@ function hideExpired() {
       img.parentNode.style.display = 'none'; // Oculta o widget
     }
   });
-  cmsHelperExpiredDivs.forEach(div => {
-    div.style.display = 'none'; // Oculta a overlay "Expirado"
-  });
-  // console.log('CMS Helper: Expirados ocultados.');
 }

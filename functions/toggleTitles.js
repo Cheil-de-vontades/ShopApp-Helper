@@ -10,7 +10,7 @@ function addTitles() {
     titleSpan.textContent = img.getAttribute('title').trim();
     titleSpan.style.display = 'block'; // Garante que o título esteja visível
     // Estilização básica para o span do título
-    titleSpan.style.backgroundColor = '#ffeb3b';
+    titleSpan.style.backgroundColor = '#ccc';
     titleSpan.style.color = '#000';
     titleSpan.style.fontSize = '12px';
     titleSpan.style.padding = '2px 4px';

@@ -319,6 +319,12 @@ function atualizarDataNoTitulo() {
         addRedBorders();
         addTitles();
         break;
+      case 'showDisplayNo':
+        showDisplayNo();
+        break;
+      case 'hideDisplayNo':
+        hideDisplayNo();
+        break;
       case 'deactivateExtension':
 
         // Remove elementos da extensão e limpa listeners ao sair de uma URL do ShopApp

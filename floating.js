@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const removeTitlesBtn = document.getElementById('removeTitles');
   const injectShowExpiredBtn = document.getElementById('injectShowExpired');
   const injectHideExpiredBtn = document.getElementById('injectHideExpired');
+  const injectShowDisplayNoBtn = document.getElementById('injectShowDisplayNo');
+  const injectHideDisplayNoBtn = document.getElementById('injectHideDisplayNo');
+  
 
   // Position buttons event listeners - SEND MESSAGE TO CONTENT.JS
   posBtns.addEventListener('click', function (event) {
@@ -118,6 +121,22 @@ document.addEventListener('DOMContentLoaded', function () {
     injectHideExpiredBtn.addEventListener('click', () => {
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         chrome.tabs.sendMessage(tabs[0].id, { action: 'hideExpired' }); // Mapeado para 'hideExpired'
+      });
+    });
+  }
+
+  if (injectShowDisplayNoBtn) {
+    injectShowDisplayNoBtn.addEventListener('click', () => {
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        chrome.tabs.sendMessage(tabs[0].id, { action: 'showDisplayNo' }); // Mapeado para 'showDisplayNo'
+      });
+    });
+  }
+
+  if (injectHideDisplayNoBtn) {
+    injectHideDisplayNoBtn.addEventListener('click', () => {
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        chrome.tabs.sendMessage(tabs[0].id, { action: 'hideDisplayNo' }); // Mapeado para 'hideDisplayNo'
       });
     });
   }
