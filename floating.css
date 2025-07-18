@@ -8,8 +8,6 @@ html, body {
   font-family: 'Press Start 2P', cursive, 'Poppins', sans-serif;
   background-color: #0d1b2a; /* Azul escuro, ambiente arcade */
   color: #f0f0f0;
-  width: 340px; /* Largura fixa para o conteúdo do iframe */
-  max-width: 90vw;
   border: none;
   border-radius: 12px;
   box-shadow: none;
@@ -31,16 +29,16 @@ html, body {
 #ext-box {
   display: flex;
   flex-direction: column;
-  padding: 20px;
   box-sizing: border-box;
   height: auto; /* Permite que o conteúdo dite a altura */
+  margin: 30px;
 }
 
 h1 {
   font-family: 'Press Start 2P', cursive;
-  font-size: 14px;
+  font-size: 12px;
   color: #fff; /* Título branco */
-  margin-bottom: 16px;
+  margin-bottom: 24px;
   letter-spacing: 2px;
   text-align: center;
   text-shadow: 2px 2px 0 #e60012; /* Contorno vermelho para o título */
@@ -54,7 +52,7 @@ h1 {
 }
 
 #pos-btns button {
-  padding: 4px 8px;
+  padding: 2px 4px;
   font-size: 16px;
   cursor: pointer;
   border: 3px solid #6a0dad; /* Borda roxa */
@@ -73,6 +71,13 @@ h1 {
   transform: translateY(-2px);
 }
 
+.date-inputs {
+  padding: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .input-copy {
   display: flex;
   gap: 10px;
@@ -81,7 +86,7 @@ h1 {
 
 .input-copy input[type="text"] {
   flex-grow: 1;
-  padding: 10px;
+  padding: 5px;
   border: 2px solid #66aaff; /* Borda azul clara */
   background-color: #1a2a3a; /* Fundo mais escuro para input */
   color: #f0f0f0;
@@ -95,8 +100,8 @@ h1 {
 }
 
 .copy-btn {
-  padding: 10px 15px;
-  font-size: 14px;
+  padding: 6px 10px;
+  font-size: 12px;
   cursor: pointer;
   border: 3px solid #007bff; /* Borda azul */
   background: linear-gradient(145deg, #007bff, #0056b3); /* Gradiente azul */
@@ -114,9 +119,17 @@ h1 {
   transform: translateY(-2px);
 }
 
+.functions-buttons {
+  padding: 12px 0;
+}
+
+.functions-buttons p {
+  font-size: 12px;
+}
+
 /* Estilos comuns para botões (existentes e novos) */
 #execute, #minimizar, .feature-buttons-group button {
-  padding: 12px 16px;
+  padding: 6px 8px;
   font-size: 11px;
   border-radius: 6px;
   cursor: pointer;
@@ -152,6 +165,7 @@ h1 {
   border-color: #ff3c00; /* Vermelho */
   background: linear-gradient(145deg, #ff3c00, #a50000);
   box-shadow: inset 0 0 8px #ff6f4d, 0 4px 0 #8c0000;
+  margin-top: 24px;
 }
 
 #minimizar:hover {
@@ -164,9 +178,10 @@ h1 {
 /* Estilo para os novos grupos de botões de funcionalidade */
 .feature-buttons-group {
     display: flex;
-    flex-wrap: wrap; /* Permite que os botões quebrem para a próxima linha */
-    gap: 10px; /* Espaço entre os botões dentro do grupo */
-    justify-content: space-between; /* Distribui o espaço entre os botões */
+    flex-wrap: wrap; 
+    gap: 10px; 
+    justify-content: space-between; 
+    margin-bottom: 8px;
 }
 
 .feature-buttons-group button {

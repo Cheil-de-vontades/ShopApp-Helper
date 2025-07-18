@@ -86,8 +86,9 @@
     }
   });
 
-  function limparEspacosInput() {
-    const inp = document.getElementById("_marketingData[0].deeplinkQuery");
+  function limparEspacosInput(event) {
+    console.log(event.target.id, 'POLIPOLLIÒLI')
+    const inp = document.getElementById(event.target.id);
     const errorMessageEl = document.createElement('span');
     errorMessageEl.setAttribute('id', 'exErrorMessageDeepLink');
     errorMessageEl.style.color = "red";
@@ -108,31 +109,36 @@
 }
 
 
-function atualizarDataNoTitulo() {
-  const analyticsTitleInput = document.getElementById('_marketingData[0].analyticsTitle');
+function atualizarDataNoTitulo(event) {
+  const analyticsTitleInput = document.getElementById(event.target.id);
   if (!analyticsTitleInput || !analyticsTitleInput.value) return;
 
   const today = new Date();
   const ano = today.getFullYear();
   const mes = String(today.getMonth() + 1).padStart(2, '0');
   const dia = String(today.getDate()).padStart(2, '0');
-  const novaData = `_${ano}${mes}${dia}`; // Exemplo: "_20250627"
+  const novaData = `_${ano}${mes}${dia}`; 
+  let errorMessageEl = analyticsTitleInput.parentNode.querySelector('#exErrorMessageAnalytics');
 
-  let currentValue = analyticsTitleInput.value;
-
-  // 1. **VERIFICAÇÃO CHAVE**: Se o valor atual já termina com a data correta do dia,
-  // não precisamos fazer nada. Isso impede a duplicação em execuções subsequentes.
-  if (currentValue.endsWith(novaData)) {
-    // console.log('Input Analytics Title: Data já está atualizada e correta. Nenhuma alteração necessária.');
-    return; // Sai da função imediatamente
+  if (!errorMessageEl) {
+    errorMessageEl = document.createElement('span');
+    errorMessageEl.innerText = 'Confirme se a data é necessária';
+    errorMessageEl.style.color = 'red';
+    errorMessageEl.setAttribute('id', 'exErrorMessageAnalytics');
   }
 
-  // 2. Se o valor não termina com a data correta, removemos qualquer sufixo de data existente.
-  // Esta regex remove uma ou mais ocorrências do padrão "_YYYYMMDD" do final da string.
-  const tituloSemDatas = currentValue.replace(/(_\d{8})+$/, '');
+  let currentValue = analyticsTitleInput.value;
+  
+  if (currentValue.endsWith(novaData)) {
+    errorMessageEl.remove();
+    analyticsTitleInput.style.border = "none";
+    return; 
+  }
 
-  // 3. Anexa a nova data, garantindo que ela seja a única data no final.
-  analyticsTitleInput.value = tituloSemDatas + novaData;
+  analyticsTitleInput.style.border = '1px red solid';
+  
+  analyticsTitleInput.parentNode.appendChild(errorMessageEl);
+
 
   // console.log('Input Analytics Title: Data atualizada para', novaData);
 }
@@ -203,11 +209,21 @@ function atualizarDataNoTitulo() {
 
   function attachInputListeners() {
       // Cria um único observer se ainda não foi criado
+
       if (!window._inputObserver) {
           window._inputObserver = new MutationObserver((mutationsList, observer) => {
               for (const mutation of mutationsList) {
                   if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                      ['_marketingData[0].deeplinkQuery', '_marketingData[0].analyticsTitle'].forEach(id => {
+                      [
+                        '_marketingData[0].deeplinkQuery', 
+                        '_marketingData[0].analyticsTitle',
+                        '_marketingData[1].deeplinkQuery', 
+                        '_marketingData[1].analyticsTitle',
+                        '_marketingData[2].deeplinkQuery', 
+                        '_marketingData[2].analyticsTitle',
+                        '_marketingData[3].deeplinkQuery', 
+                        '_marketingData[3].analyticsTitle',
+                      ].forEach(id => {
                           const el = document.getElementById(id);
                           if (el && !el.dataset.listenerAttached) { // Verifica se o listener já foi anexado
                               const fn = id.includes('deeplink') ? limparEspacosInput : atualizarDataNoTitulo;
@@ -324,6 +340,9 @@ function atualizarDataNoTitulo() {
         break;
       case 'hideDisplayNo':
         hideDisplayNo();
+        break;
+      case 'deleteAllExpired':
+        deleteAllExpired();
         break;
       case 'deactivateExtension':
 

@@ -8,6 +8,14 @@ function addYellowBorders() {
       img.parentNode.style.borderRadius = '5px';
     }
   });
+
+  cmsHelperAllDivs.forEach((div) => {
+    const icon = div.querySelector('.not-viewable img')
+    if (icon.src.endsWith('394453f37b3a0990c8de.svg')) {
+      div.style.border = '4px solid yellow';
+      div.style.borderRadius = '5px';
+    }
+  });
 }
 
 function addRedBorders() {

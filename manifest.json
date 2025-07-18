@@ -23,6 +23,7 @@
       "js": [
         "utils/initializeCmsHelperElements.js",
         "utils/copyButton.js",
+        "functions/deleteAllExpired.js",
         "functions/toggleTitles.js",
         "functions/toggleBorders.js",
         "functions/toggleExpireds.js",

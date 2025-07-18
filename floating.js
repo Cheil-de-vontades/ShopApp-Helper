@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const injectHideExpiredBtn = document.getElementById('injectHideExpired');
   const injectShowDisplayNoBtn = document.getElementById('injectShowDisplayNo');
   const injectHideDisplayNoBtn = document.getElementById('injectHideDisplayNo');
+  const injectDeleteAllExpiredBtn = document.getElementById('deleteAllExpired');
   
 
   // Position buttons event listeners - SEND MESSAGE TO CONTENT.JS
@@ -63,18 +64,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Execute button event listener - SEND MESSAGE TO CONTENT.JS
-  executeBtn.addEventListener('click', function () {
-    const campo1Value = document.getElementById('campo1').value;
-    const campo2Value = document.getElementById('campo2').value;
+  // // Execute button event listener - SEND MESSAGE TO CONTENT.JS
+  // executeBtn.addEventListener('click', function () {
+  //   const campo1Value = document.getElementById('campo1').value;
+  //   const campo2Value = document.getElementById('campo2').value;
 
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      chrome.tabs.sendMessage(tabs[0].id, {
-        action: 'executeAutomation',
-        data: { campo1: campo1Value, campo2: campo2Value },
-      });
-    });
-  });
+  //   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+  //     chrome.tabs.sendMessage(tabs[0].id, {
+  //       action: 'executeAutomation',
+  //       data: { campo1: campo1Value, campo2: campo2Value },
+  //     });
+  //   });
+  // });
 
   // New feature button event listeners - send messages to content.js
   if (addRedBordersBtn) {
@@ -137,6 +138,14 @@ document.addEventListener('DOMContentLoaded', function () {
     injectHideDisplayNoBtn.addEventListener('click', () => {
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         chrome.tabs.sendMessage(tabs[0].id, { action: 'hideDisplayNo' }); // Mapeado para 'hideDisplayNo'
+      });
+    });
+  }
+
+  if (injectDeleteAllExpiredBtn) {
+    injectDeleteAllExpiredBtn.addEventListener('click', () => {
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        chrome.tabs.sendMessage(tabs[0].id, { action: 'deleteAllExpired' }); // Mapeado para 'deleteAllExpired'
       });
     });
   }
