@@ -28,6 +28,7 @@
         "functions/toggleBorders.js",
         "functions/toggleExpireds.js",
         "functions/toggleShowOnScreen.js",
+        "functions/addBlankAlerts.js",
         "content.js"
       ],
       "run_at": "document_idle"

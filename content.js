@@ -87,7 +87,6 @@
   });
 
   function limparEspacosInput(event) {
-    console.log(event.target.id, 'POLIPOLLIÒLI')
     const inp = document.getElementById(event.target.id);
     const errorMessageEl = document.createElement('span');
     errorMessageEl.setAttribute('id', 'exErrorMessageDeepLink');
@@ -223,14 +222,25 @@ function atualizarDataNoTitulo(event) {
                         '_marketingData[2].analyticsTitle',
                         '_marketingData[3].deeplinkQuery', 
                         '_marketingData[3].analyticsTitle',
+                        'react-select-4-input',
+                        'idNewExtension',
                       ].forEach(id => {
                           const el = document.getElementById(id);
                           if (el && !el.dataset.listenerAttached) { // Verifica se o listener já foi anexado
                               const fn = id.includes('deeplink') ? limparEspacosInput : atualizarDataNoTitulo;
                               el.addEventListener('blur', fn);
-                              el.dataset.listenerAttached = 'true'; // Marca como anexado
-                              // console.log(`Input Listener: Anexado para ${id}`);
+                              el.dataset.listenerAttached = 'true';
+
+                              const fnWidgetType = id.includes('react-select-4-input') ? addBlankAlerts : null;
+                              el.addEventListener('blur', fnWidgetType);
+
+                              const labelsNodeList = document.querySelectorAll('.select-label.cursor-default');
+                              const labelsArray = Array.from(labelsNodeList); // Converte NodeList em array
+                              const labelElement = labelsArray.find(label => label.innerText.trim() === 'Deeplink type');
+
+                              labelElement.parentNode.addEventListener('blur', removeBlankAlerts);
                           }
+                          
                       });
                   }
               }
