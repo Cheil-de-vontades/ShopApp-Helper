@@ -23,8 +23,11 @@ function addBlankAlerts() {
     labelElement.parentNode.setAttribute('id', 'idNewExtension');
     labelElement2.parentNode.setAttribute('id', 'idNewExtension2');
 
+
+
     labelElement.parentNode.appendChild(alertEl);
     labelElement2.parentNode.appendChild(alertEl2);
+
 
     const inputEl = labelElement.parentNode.querySelector('input');
     inputEl.addEventListener('blur', removeBlankAlerts);
@@ -39,7 +42,6 @@ function addBlankAlerts() {
 }
 
 function removeBlankAlerts(event) {
-    console.log(event, 'Removendo alerta');
 
     const existingAlert = document.getElementById('idNewExtension');
 
@@ -62,6 +64,10 @@ function removeBlankAlerts2(event) {
             existingAlert2.removeChild(alertSpan2);
         }
     } else {
+
+        const alertExists = existingAlert2.querySelector('#idAlertExtension2');
+        console.log('Alert exists:', alertExists);
+
         existingAlert2.style.border = '1px solid red';
 
         const alertEl2 = document.createElement('span');
@@ -70,6 +76,9 @@ function removeBlankAlerts2(event) {
         alertEl2.style.color = 'red';
         alertEl2.style.fontWeight = 'bold';
 
-        existingAlert2.appendChild(alertEl2);
+        if (!alertExists){
+            existingAlert2.appendChild(alertEl2);
+        }
+
     }
 }

@@ -102,7 +102,7 @@
         }
       } else {
         inp.style.border = "none";
-        inp.parentNode.querySelector('#exErrorMessageDeepLink').remove();
+        inp.parentNode.querySelector('#exErrorMessageDeepLink')?.remove();
       } 
     }
 }
